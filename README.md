@@ -1,4 +1,4 @@
-# DeepSeek Local Console
+# DeepSeek Local Console (Unofficial)
 
 一个本地运行的 DeepSeek 对话控制台。前端页面直接在浏览器中使用，后端只负责静态资源、状态持久化和 DeepSeek API 代理请求。
 
@@ -106,4 +106,6 @@ npm start
 
 ## 项目许可证
 
-本仓库当前未声明项目级开源许可证。第三方库和字体分别按上表列出的许可证使用与分发。
+本项目代码使用 GNU General Public License v3.0 or later 开源，详见根目录 `LICENSE`。
+
+第三方库和字体不由本项目许可证重新授权，分别按上表列出的许可证使用与分发。
