@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <path
+    d="M17 47C17 30.4315 30.4315 17 47 17"
+    stroke="#2F261F"
+    stroke-width="7.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M25 47C25 34.8497 34.8497 25 47 25"
+    stroke="#2F261F"
+    stroke-width="6"
+    stroke-linecap="round"
+    opacity="0.9"
+  />
+  <path
+    d="M33 47C33 39.268 39.268 33 47 33"
+    stroke="#2F261F"
+    stroke-width="4.5"
+    stroke-linecap="round"
+    opacity="0.82"
+  />
+  <circle cx="47" cy="33" r="4.8" fill="#CF7A46" />
+</svg>

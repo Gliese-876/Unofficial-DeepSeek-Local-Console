@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181715" />
+    <title>DeepSeek</title>
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/assistant-mark-light.svg?v=20260424-3" />
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/assistant-mark-dark.svg?v=20260424-3" />
+    <link rel="icon" href="/assistant-mark-light.svg?v=20260424-3" />
+    <link rel="stylesheet" href="/vendor/vditor/dist/index.css" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <div id="sidebarScrim" class="surface-scrim" hidden></div>
+
+      <aside class="sidebar-panel">
+        <button
+          id="sidebarDockToggleBtn"
+          class="icon-button sidebar-dock-toggle"
+          type="button"
+          aria-label="收起会话列表"
+          aria-expanded="true"
+        >
+          ‹
+        </button>
+
+        <div class="sidebar-rail">
+        </div>
+
+        <div class="sidebar-content">
+          <div class="sidebar-header">
+            <div class="sidebar-brand">
+              <div class="brand-copy">
+                <strong>DeepSeek</strong>
+                <span>本地对话</span>
+              </div>
+            </div>
+
+            <button id="sidebarCloseBtn" class="icon-button mobile-only" type="button" aria-label="关闭会话列表">
+              ×
+            </button>
+          </div>
+
+          <div class="sidebar-toolbar">
+            <button id="newConversationBtn" class="primary-action" type="button">新建对话</button>
+          </div>
+
+          <div class="sidebar-section-heading">
+            <span>会话</span>
+            <span id="conversationCount" class="count-pill">0</span>
+          </div>
+
+          <div id="conversationList" class="conversation-list"></div>
+
+          <div class="sidebar-footer">
+            <div class="sidebar-status">
+              <div id="sidebarApiKeyStatus" class="sidebar-status-line">未填写 API Key</div>
+              <div id="sidebarModelSummary" class="sidebar-status-line">未设模型</div>
+            </div>
+
+            <div class="sidebar-footer-label">API 地址</div>
+            <div id="sidebarBaseUrlSummary" class="sidebar-base-url">https://api.deepseek.com</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace-shell">
+        <header class="workspace-header">
+          <div class="workspace-leading">
+            <button id="sidebarToggleBtn" class="icon-button mobile-only" type="button" aria-label="打开会话列表">
+              ☰
+            </button>
+
+            <div class="workspace-title-wrap">
+              <div class="workspace-product">DeepSeek</div>
+              <input
+                id="conversationTitleInput"
+                class="conversation-title-input"
+                type="text"
+                maxlength="80"
+                placeholder="未命名对话"
+              />
+            </div>
+          </div>
+
+          <div class="workspace-actions">
+            <div id="conversationMeta" class="conversation-meta"></div>
+            <div class="workspace-action-buttons">
+              <div class="workspace-action-island workspace-action-island-tools">
+                <button id="duplicateConversationBtn" class="ghost-action desktop-only" type="button">复制</button>
+                <button id="clearConversationBtn" class="ghost-action desktop-only" type="button">清空</button>
+                <button id="deleteConversationBtn" class="ghost-action desktop-only danger" type="button">删除</button>
+              </div>
+              <div class="workspace-action-island workspace-action-island-settings">
+                <button id="inspectorToggleBtn" class="ghost-action strong" type="button">设置</button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div id="noticeBanner" class="notice-banner" hidden></div>
+
+        <section id="messagesPanel" class="messages-panel"></section>
+
+        <form id="composerForm" class="composer-panel">
+          <div class="composer-shell">
+            <div id="composerInput" class="composer-input composer-editor"></div>
+
+            <div class="composer-bar">
+              <div class="composer-buttons">
+                <button
+                  id="stopBtn"
+                  class="ghost-action composer-action stop-action"
+                  type="button"
+                  aria-label="停止生成"
+                  title="停止生成"
+                  hidden
+                >
+                  停止
+                </button>
+                <button
+                  id="sendBtn"
+                  class="primary-action composer-action send-action"
+                  type="submit"
+                  aria-label="发送"
+                  title="发送"
+                >
+                  发送
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <div id="inspectorBackdrop" class="drawer-backdrop" hidden></div>
+
+      <aside id="inspectorDrawer" class="inspector-drawer" aria-hidden="true" inert>
+        <header class="inspector-header">
+          <div>
+            <p class="inspector-overline">Settings</p>
+            <h2>请求设置</h2>
+          </div>
+
+          <button id="inspectorCloseBtn" class="icon-button" type="button" aria-label="关闭设置">
+            ×
+          </button>
+        </header>
+
+        <div class="inspector-scroll">
+          <section class="inspector-section">
+            <div class="section-heading">
+              <span>连接</span>
+              <span class="section-caption">本地保存</span>
+            </div>
+
+            <label class="field">
+              <span>API Key</span>
+              <input id="apiKeyInput" type="password" autocomplete="off" placeholder="sk-..." />
+            </label>
+
+            <label class="checkbox-field">
+              <input id="rememberApiKeyInput" type="checkbox" />
+              <span>本地记住 API Key（明文保存）</span>
+            </label>
+
+            <label class="field">
+              <span>API 地址</span>
+              <input id="baseUrlInput" type="url" placeholder="https://api.deepseek.com" />
+            </label>
+
+            <div class="test-action-row">
+              <button id="settingsTestBtn" class="ghost-action strong" type="button">测试当前设置</button>
+            </div>
+
+            <div id="settingsTestStatus" class="test-status">未测试。</div>
+            <pre id="settingsTestDetails" class="test-details">测试请求不会写入当前对话历史。</pre>
+          </section>
+
+          <section class="inspector-section">
+            <div class="section-heading">
+              <span>模型与回复</span>
+              <span class="section-caption">当前会话专属</span>
+            </div>
+
+            <label class="field">
+              <span>系统提示词</span>
+              <textarea id="systemPromptInput" rows="4" placeholder="可留空"></textarea>
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>模型</span>
+                <select id="modelPresetSelect">
+                  <option value="deepseek-v4-flash">DeepSeek V4 Flash</option>
+                  <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+                  <option value="custom">自定义</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>思考模式</span>
+                <select id="thinkingTypeSelect">
+                  <option value="enabled">开启</option>
+                  <option value="disabled">关闭</option>
+                </select>
+              </label>
+            </div>
+
+            <label id="customModelField" class="field">
+              <span>自定义模型 ID</span>
+              <input id="customModelInput" type="text" placeholder="例如：deepseek-v4-flash" />
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>思考强度</span>
+                <select id="reasoningEffortSelect">
+                  <option value="high">高 high</option>
+                  <option value="max">最高 max</option>
+                </select>
+              </label>
+
+              <label class="checkbox-field inline">
+                <input id="streamToggle" type="checkbox" />
+                <span>流式输出</span>
+              </label>
+            </div>
+
+            <label class="checkbox-field">
+              <input id="includeUsageToggle" type="checkbox" />
+              <span>返回 Token 用量</span>
+            </label>
+
+            <div class="field-grid triple">
+              <label class="field">
+                <span>最大输出 Token</span>
+                <input id="maxTokensInput" type="number" min="1" placeholder="默认" />
+              </label>
+
+              <label class="field">
+                <span>随机度 Temperature</span>
+                <input id="temperatureInput" type="number" step="0.1" min="0" max="2" placeholder="默认" />
+              </label>
+
+              <label class="field">
+                <span>核采样 Top P</span>
+                <input id="topPInput" type="number" step="0.05" min="0" max="1" placeholder="默认" />
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>话题扩展系数</span>
+                <input
+                  id="presencePenaltyInput"
+                  type="number"
+                  step="0.1"
+                  min="-2"
+                  max="2"
+                  placeholder="Presence Penalty"
+                />
+              </label>
+
+              <label class="field">
+                <span>重复抑制系数</span>
+                <input
+                  id="frequencyPenaltyInput"
+                  type="number"
+                  step="0.1"
+                  min="-2"
+                  max="2"
+                  placeholder="Frequency Penalty"
+                />
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>输出格式</span>
+                <select id="responseFormatSelect">
+                  <option value="text">普通文本 text</option>
+                  <option value="json_object">JSON 对象 json_object</option>
+                </select>
+              </label>
+
+              <label class="checkbox-field inline">
+                <input id="logprobsToggle" type="checkbox" />
+                <span>返回候选 token 概率</span>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>候选 token 数</span>
+              <input id="topLogprobsInput" type="number" min="0" max="20" placeholder="仅在开启上项后生效" />
+            </label>
+
+            <label class="field">
+              <span>停止词 / Stop</span>
+              <textarea id="stopInput" rows="3" placeholder="每行一个停止词，或直接填写 JSON 数组"></textarea>
+            </label>
+          </section>
+
+          <section class="inspector-section">
+            <div class="section-heading">
+              <span>工具与扩展</span>
+              <span class="section-caption">高级选项</span>
+            </div>
+
+            <label class="field">
+              <span>工具定义 JSON</span>
+              <textarea
+                id="toolsJsonInput"
+                rows="6"
+                placeholder='例如：[{"type":"function","function":{"name":"lookup_weather","description":"...","parameters":{"type":"object","properties":{"city":{"type":"string"}}}}}]'
+              ></textarea>
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>工具调用方式</span>
+                <select id="toolChoiceModeSelect">
+                  <option value="auto">自动 auto</option>
+                  <option value="none">不调用 none</option>
+                  <option value="required">必须调用 required</option>
+                  <option value="named">指定函数 named</option>
+                  <option value="custom">自定义 JSON custom</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>指定函数名</span>
+                <input id="toolChoiceNameInput" type="text" placeholder="函数名" />
+              </label>
+            </div>
+
+            <label class="field">
+              <span>自定义工具调用 JSON</span>
+              <textarea
+                id="toolChoiceCustomInput"
+                rows="4"
+                placeholder='例如：{"type":"function","function":{"name":"lookup_weather"}}'
+              ></textarea>
+            </label>
+
+            <label class="field">
+              <span>额外请求参数 JSON</span>
+              <textarea
+                id="extraBodyInput"
+                rows="6"
+                placeholder='可补充未来字段，例如：{"metadata":{"source":"local-console"}}'
+              ></textarea>
+            </label>
+          </section>
+
+          <section class="inspector-section">
+            <div class="section-heading">
+              <span>请求预览</span>
+              <span class="section-caption">发送前生成</span>
+            </div>
+
+            <pre id="requestPreview" class="code-block"></pre>
+          </section>
+        </div>
+      </aside>
+    </div>
+
+    <script defer src="/vendor/marked/marked.umd.js"></script>
+    <script defer src="/vendor/dompurify/purify.min.js"></script>
+    <script defer src="/vendor/katex/katex.min.js"></script>
+    <script defer src="/vendor/katex/contrib/auto-render.min.js"></script>
+    <script defer src="/vendor/vditor/dist/index.min.js"></script>
+    <script defer src="/app.js"></script>
+  </body>
+</html>
