@@ -6,6 +6,8 @@
 
 本项目的代码、界面和文档均完全使用 OpenAI Codex 编写。
 
+项目重点是尽可能完整地暴露 DeepSeek 请求参数，让用户可以自定义每次提交给 API 的参数，包括许多现有平台尚未开放的 `reasoning_effort` 等新参数。
+
 ## 功能
 
 - 本地填写 API Key 和 API 地址
@@ -16,6 +18,7 @@
 - Markdown / KaTeX 渲染
 - 输入区支持类似 Obsidian 的 Markdown 即时编辑体验
 - 每个会话独立保存模型、流式模式和请求参数
+- 支持自定义提交给 API 的请求参数，包括 `reasoning_effort`
 - 可选拉取 `/models` 模型列表
 
 ## 运行要求

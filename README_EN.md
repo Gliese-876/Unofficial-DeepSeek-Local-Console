@@ -6,6 +6,8 @@ An unofficial, locally hosted DeepSeek chat console. The browser UI runs on your
 
 The code, UI, and documentation for this project were written entirely with OpenAI Codex.
 
+The project focuses on exposing DeepSeek request parameters as completely as possible, so users can customize the payload sent to the API, including newer parameters such as `reasoning_effort` that many existing platforms do not yet expose.
+
 This project is not affiliated with or endorsed by DeepSeek.
 
 ## Features
@@ -18,6 +20,7 @@ This project is not affiliated with or endorsed by DeepSeek.
 - Render Markdown and KaTeX
 - Use an Obsidian-like Markdown editing experience in the input area
 - Store model, streaming mode, and request parameters per conversation
+- Customize request parameters sent to the API, including `reasoning_effort`
 - Optionally fetch the model list from `/models`
 
 ## Requirements
