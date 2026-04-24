@@ -6,7 +6,7 @@ An unofficial, locally hosted DeepSeek chat console. The browser UI runs on your
 
 The code, UI, and documentation for this project were written entirely with OpenAI Codex.
 
-The project focuses on exposing DeepSeek request parameters as completely as possible, so users can customize the payload sent to the API, including newer parameters such as `reasoning_effort` that many existing platforms do not yet expose.
+The project focuses on exposing DeepSeek request parameters as completely as possible, so users can customize the payload sent to the API, including newer parameters such as `reasoning_effort` that many BYOK third-party chat clients do not yet expose.
 
 This project is not affiliated with or endorsed by DeepSeek.
 

@@ -6,7 +6,7 @@
 
 本项目的代码、界面和文档均完全使用 OpenAI Codex 编写。
 
-项目重点是尽可能完整地暴露 DeepSeek 请求参数，让用户可以自定义每次提交给 API 的参数，包括许多现有平台尚未开放的 `reasoning_effort` 等新参数。
+项目重点是尽可能完整地暴露 DeepSeek 请求参数，让用户可以自定义每次提交给 API 的参数，包括许多 BYOK 第三方 Chat 客户端尚未开放的 `reasoning_effort` 等新参数。
 
 ## 功能
 
